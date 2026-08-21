@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+renovate-config-validator --strict renovate.json
+actionlint
+pinact run --check
+tofu fmt -check -recursive
+tflint --init
+tflint
+
+validation_dir="$(mktemp -d)"
+trap 'rm -rf "$validation_dir"' EXIT
+cp ./*.tf "$validation_dir"/
+tofu -chdir="$validation_dir" init -backend=false
+tofu -chdir="$validation_dir" validate
