@@ -26,5 +26,10 @@ nix develop
 scripts/check
 ```
 
-Releases are managed by tagpr from Conventional Commit messages merged into
-`main`.
+Releases are Git tags created from `main`. Choose the next semantic version,
+then create and push the tag:
+
+```console
+git tag v0.1.0
+git push origin v0.1.0
+```

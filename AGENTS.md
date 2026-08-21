@@ -4,4 +4,4 @@
 - Preserve semantic versioning: incompatible input or output changes require a major release.
 - Run `scripts/check` before committing.
 - Update `README.md` when usage or behavior changes.
-- Use Conventional Commits so tagpr can determine the next release.
+- Create semantic-version release tags from `main` after the corresponding changes are merged.
