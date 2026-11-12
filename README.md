@@ -26,6 +26,12 @@ nix develop
 scripts/check
 ```
 
+GitHub Actions dependencies are recorded in `.github/workflows/actions.lock`.
+After editing a workflow, run `gh actions-lock --no-narrow`, review the changes,
+and run `gh actions-lock --verify`. Install the extension first with
+`gh extension install github/gh-actions-lock --pin v0.4.0`. Pull requests run
+read-only lock verification.
+
 Releases are Git tags created from `main`. Choose the next semantic version,
 then create and push the tag:
 
