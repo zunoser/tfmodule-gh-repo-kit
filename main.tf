@@ -1,10 +1,15 @@
 resource "github_repository" "this" {
-  name        = var.name
-  description = var.description
-  visibility  = var.visibility
+  name         = var.name
+  description  = var.description
+  visibility   = var.visibility
+  homepage_url = var.general.homepage_url
+  topics       = var.general.topics
+  is_template  = var.general.is_template
 
   has_issues      = var.general.has_issues
   has_discussions = var.general.has_discussions
+  has_projects    = var.general.has_projects
+  has_wiki        = var.general.has_wiki
 
   allow_merge_commit = var.general.allow_merge_commit
   allow_rebase_merge = var.general.allow_rebase_merge
@@ -17,7 +22,7 @@ resource "github_repository" "this" {
 
 resource "github_repository_vulnerability_alerts" "this" {
   repository = github_repository.this.name
-  enabled    = true
+  enabled    = var.general.vulnerability_alerts
 }
 
 resource "github_branch_default" "this" {
