@@ -6,7 +6,7 @@ Reusable OpenTofu module for standardized GitHub repository management.
 
 ```hcl
 module "repository" {
-  source = "git::https://github.com/zunoser/tfmodule-gh-repo-kit.git?ref=v0.1.0"
+  source = "git::https://github.com/zunoser/tfmodule-gh-repo-kit.git?ref=v0.2.0"
 
   name        = "example"
   description = "Example repository"
@@ -16,6 +16,41 @@ module "repository" {
 
 Pin the module to a release tag. Renovate can then propose version updates to
 consumers.
+
+## General settings
+
+The `general` defaults follow the recommended repository policy. Override a
+field only when a repository needs a different setting.
+
+| Field                    | Default  | Notes                                         |
+| ------------------------ | -------- | --------------------------------------------- |
+| `default_branch`         | `"main"` |                                               |
+| `auto_init`              | `true`   | Takes effect only when creating a repository. |
+| `homepage_url`           | `null`   | Left unmanaged when null.                     |
+| `topics`                 | `null`   | Left unmanaged when null.                     |
+| `is_template`            | `false`  |                                               |
+| `has_issues`             | `true`   |                                               |
+| `has_discussions`        | `false`  |                                               |
+| `has_projects`           | `false`  |                                               |
+| `has_wiki`               | `false`  |                                               |
+| `allow_merge_commit`     | `false`  |                                               |
+| `allow_rebase_merge`     | `false`  |                                               |
+| `allow_squash_merge`     | `true`   |                                               |
+| `delete_branch_on_merge` | `true`   |                                               |
+| `vulnerability_alerts`   | `true`   | Dependabot alerts.                            |
+
+When importing an existing repository, set `auto_init = false` and set every
+field that differs from the defaults to the repository's current value, so the
+first plan changes nothing on GitHub. Move the repository to the defaults in
+later, reviewed changes.
+
+## Archived repositories
+
+The module sets `archive_on_destroy`, so destroying a root archives the
+repository instead of deleting it. The GitHub provider cannot read vulnerability
+alerts on an archived repository, so remove archived repositories from
+management instead of keeping them in a root. To archive a managed repository,
+destroy its root, then delete the root and its state.
 
 ## Development
 
