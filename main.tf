@@ -60,6 +60,15 @@ resource "github_repository_environment" "this" {
   environment = each.value
 }
 
+resource "github_actions_repository_permissions" "this" {
+  count = var.actions_permissions == null ? 0 : 1
+
+  repository           = github_repository.this.name
+  enabled              = var.actions_permissions.enabled
+  allowed_actions      = var.actions_permissions.enabled ? var.actions_permissions.allowed_actions : null
+  sha_pinning_required = var.actions_permissions.enabled ? true : null
+}
+
 resource "github_repository_ruleset" "default_branch" {
   count = var.default_branch_ruleset == null ? 0 : 1
 

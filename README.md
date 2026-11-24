@@ -52,6 +52,19 @@ alerts on an archived repository, so remove archived repositories from
 management instead of keeping them in a root. To archive a managed repository,
 destroy its root, then delete the root and its state.
 
+## Actions permissions
+
+The module enables Actions and requires pinned actions by default. An
+`actions.lock` entry satisfies this requirement for the actions it covers.
+Remote reusable workflow calls still need full commit SHAs.
+
+Before upgrading an existing repository, check its Actions settings. To keep
+Actions disabled or retain a restrictive action policy, set
+`actions_permissions.enabled` or `actions_permissions.allowed_actions` to match
+the repository. The default action policy is `all`. Set `actions_permissions = null`
+if these settings are already managed elsewhere or you need to defer adoption.
+Upgrade the GitHub provider to v6.11 or later in the v6 series before applying.
+
 ## Development
 
 Enter the Nix development shell and run the checks:
