@@ -52,15 +52,6 @@ variable "environments" {
   default     = []
 }
 
-variable "actions_permissions" {
-  description = "Actions permissions managed by this module. Managed repositories require pinned actions. Set to null to manage these settings separately."
-  type = object({
-    enabled         = optional(bool, true)
-    allowed_actions = optional(string, "all")
-  })
-  default = {}
-}
-
 variable "default_branch_ruleset" {
   description = "Pull request requirements for the default branch. Set to null to disable the standard ruleset."
   type = object({
