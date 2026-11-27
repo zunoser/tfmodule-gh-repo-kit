@@ -36,6 +36,7 @@ field only when a repository needs a different setting.
 | `allow_merge_commit`     | `false`  |                                               |
 | `allow_rebase_merge`     | `false`  |                                               |
 | `allow_squash_merge`     | `true`   |                                               |
+| `allow_update_branch`    | `true`   | Suggest updating out-of-date PR branches.     |
 | `delete_branch_on_merge` | `true`   |                                               |
 | `vulnerability_alerts`   | `true`   | Dependabot alerts.                            |
 
@@ -43,6 +44,9 @@ When importing an existing repository, set `auto_init = false` and set every
 field that differs from the defaults to the repository's current value, so the
 first plan changes nothing on GitHub. Move the repository to the defaults in
 later, reviewed changes.
+
+GitHub's template origin is preserved when importing repositories created
+from a template.
 
 ## Archived repositories
 

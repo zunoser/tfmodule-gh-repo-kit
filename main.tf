@@ -11,13 +11,19 @@ resource "github_repository" "this" {
   has_projects    = var.general.has_projects
   has_wiki        = var.general.has_wiki
 
-  allow_merge_commit = var.general.allow_merge_commit
-  allow_rebase_merge = var.general.allow_rebase_merge
-  allow_squash_merge = var.general.allow_squash_merge
+  allow_merge_commit  = var.general.allow_merge_commit
+  allow_rebase_merge  = var.general.allow_rebase_merge
+  allow_squash_merge  = var.general.allow_squash_merge
+  allow_update_branch = var.general.allow_update_branch
 
   archive_on_destroy     = true
   auto_init              = var.general.auto_init
   delete_branch_on_merge = var.general.delete_branch_on_merge
+
+  lifecycle {
+    # GitHub returns the original template for repositories created from one.
+    ignore_changes = [template]
+  }
 }
 
 resource "github_repository_vulnerability_alerts" "this" {
