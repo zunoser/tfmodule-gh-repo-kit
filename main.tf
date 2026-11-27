@@ -1,23 +1,34 @@
 resource "github_repository" "this" {
-  name        = var.name
-  description = var.description
-  visibility  = var.visibility
+  name         = var.name
+  description  = var.description
+  visibility   = var.visibility
+  homepage_url = var.general.homepage_url
+  topics       = var.general.topics
+  is_template  = var.general.is_template
 
   has_issues      = var.general.has_issues
   has_discussions = var.general.has_discussions
+  has_projects    = var.general.has_projects
+  has_wiki        = var.general.has_wiki
 
-  allow_merge_commit = var.general.allow_merge_commit
-  allow_rebase_merge = var.general.allow_rebase_merge
-  allow_squash_merge = var.general.allow_squash_merge
+  allow_merge_commit  = var.general.allow_merge_commit
+  allow_rebase_merge  = var.general.allow_rebase_merge
+  allow_squash_merge  = var.general.allow_squash_merge
+  allow_update_branch = var.general.allow_update_branch
 
   archive_on_destroy     = true
   auto_init              = var.general.auto_init
   delete_branch_on_merge = var.general.delete_branch_on_merge
+
+  lifecycle {
+    # GitHub returns the original template for repositories created from one.
+    ignore_changes = [template]
+  }
 }
 
 resource "github_repository_vulnerability_alerts" "this" {
   repository = github_repository.this.name
-  enabled    = true
+  enabled    = var.general.vulnerability_alerts
 }
 
 resource "github_branch_default" "this" {
@@ -53,6 +64,15 @@ resource "github_repository_environment" "this" {
   for_each    = var.environments
   repository  = github_repository.this.name
   environment = each.value
+}
+
+resource "github_actions_repository_permissions" "this" {
+  count = var.actions_permissions == null ? 0 : 1
+
+  repository           = github_repository.this.name
+  enabled              = var.actions_permissions.enabled
+  allowed_actions      = var.actions_permissions.enabled ? var.actions_permissions.allowed_actions : null
+  sha_pinning_required = var.actions_permissions.enabled ? true : null
 }
 
 resource "github_repository_ruleset" "default_branch" {
